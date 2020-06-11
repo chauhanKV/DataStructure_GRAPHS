@@ -11,16 +11,26 @@ namespace Graphs
         static void Main(string[] args)
         {
             Graph graph = new Graph();
+
             graph.addNode("A");
             graph.addNode("B");
             graph.addNode("C");
-            graph.addEdge("A", "B");
-            graph.addEdge("A", "C");
-            graph.removeEdge("A", "B");
-            graph.removeNode("B");
             graph.addNode("D");
-            graph.addEdge("D", "A");
+
+            graph.addEdge("A", "B");
+            graph.addEdge("B", "D");
+            graph.addEdge("D", "C");
+            graph.addEdge("A", "C");
+
             graph.print();
+            Console.WriteLine("==== Depth First Traversal With Recursion ====");
+            graph.traverseDepthFirstUsingRecursion("A");
+
+            Console.WriteLine("==== Depth First Traversal With Iteration ====");
+            graph.traverseDepthFirstUsingIteration("A");
+
+            Console.WriteLine("==== Breadth First Traversal With Iteration ====");
+            graph.traverseBreadthFirstUsingIteration("A");
 
             Console.ReadLine();
         }

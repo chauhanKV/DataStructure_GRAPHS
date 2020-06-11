@@ -13,12 +13,14 @@ namespace Graphs
             private string label;
             public Node(string label)
             {
-                this.label = label;
+                this.Label = label;
             }
+
+            public string Label { get => label; set => label = value; }
 
             public string toString()
             {
-                return label;
+                return Label;
             }
         }
 
@@ -112,6 +114,90 @@ namespace Graphs
             // Remove ToNode from FromNodeList
             if (fromNodeList != null)
                 fromNodeList.Remove(toNode);
+        }
+
+        public void traverseDepthFirstUsingRecursion(string root)
+        {
+            var node = new Node("");
+            nodes.TryGetValue(root, out node);
+            if (node == null)
+                return;
+
+            traverseDepthFirstUsingRecursion(node, new HashSet<string>());
+        }
+
+        private void traverseDepthFirstUsingRecursion(Node node, HashSet<string> visited)
+        {
+            Console.WriteLine(node.Label);
+            visited.Add(node.Label);
+
+            var nodeList = new List<Node>();
+            adjacencyList.TryGetValue(node, out nodeList);
+            foreach (var child in nodeList)
+            {
+                if (!visited.Contains(child.Label))
+                    traverseDepthFirstUsingRecursion(child, visited);
+            }
+
+        }
+
+        public void traverseDepthFirstUsingIteration(string root)
+        {
+            var node = new Node("");
+            nodes.TryGetValue(root, out node);
+            if (node == null)
+                return;
+
+            HashSet<Node> visited = new HashSet<Node>();
+
+            Stack<Node> stack = new Stack<Node>();
+            stack.Push(node);
+            
+            while (stack.Count != 0)
+            {
+                var current = stack.Pop();
+
+                Console.WriteLine(current.Label);
+                visited.Add(current);
+
+                var nodeList = new List<Node>();
+                adjacencyList.TryGetValue(current, out nodeList);
+
+                foreach (var child in nodeList)
+                {
+                    if (!visited.Contains(child))
+                        stack.Push(child);
+                }
+            }
+        }
+
+        public void traverseBreadthFirstUsingIteration(string root)
+        {
+            var node = new Node("");
+            nodes.TryGetValue(root, out node);
+            if (node == null)
+                return;
+
+            Queue<Node> queue = new Queue<Node>();
+            HashSet<Node> visited = new HashSet<Node>();
+
+            queue.Enqueue(node);
+            while (queue.Count != 0)
+            {
+                var current = queue.Dequeue();
+
+                Console.WriteLine(current.Label);
+                visited.Add(current);
+
+                var nodeList = new List<Node>();
+                adjacencyList.TryGetValue(current, out nodeList);
+
+                foreach (var child in nodeList)
+                {
+                    if (!visited.Contains(child))
+                        queue.Enqueue(child);
+                }
+            }
         }
     }
 }
